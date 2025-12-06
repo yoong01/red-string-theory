@@ -1,0 +1,99 @@
+[
+    {
+      "id": "c1",
+      "owner_id": "u1",
+      "name": "Green Bootcut Trousers",
+      "category": "pants",
+      "size": "M",
+      "style_tags": ["casual", "vintage", "retro"],
+      "vibe": "classic",
+      "condition": 0.7,
+      "rarity": 0.5,
+      "patience": 0.6
+    },
+    {
+      "id": "c2",
+      "owner_id": "u1",
+      "name": "White Wool Uniqlo Sweater",
+      "category": "sweater",
+      "size": "6",
+      "style_tags": ["minimal", "cozy", "basic"],
+      "vibe": "refined",
+      "condition": 0.9,
+      "rarity": 0.4,
+      "patience": 0.5
+    },
+    {
+      "id": "c3",
+      "owner_id": "u1",
+      "name": "Long Black Boots",
+      "category": "shoes",
+      "size": "235",
+      "style_tags": ["classic", "sleek"],
+      "vibe": "bold",
+      "condition": 0.85,
+      "rarity": 0.6,
+      "patience": 0.7
+    },
+    {
+      "id": "c4",
+      "owner_id": "u1",
+      "name": "Vintage Red Cashmere Scarf",
+      "category": "accessory",
+      "size": "one-size",
+      "style_tags": ["vintage", "luxury"],
+      "vibe": "refined",
+      "condition": 0.8,
+      "rarity": 0.8,
+      "patience": 0.6
+    },
+    {
+      "id": "c5",
+      "owner_id": "u1",
+      "name": "Morgan de Toi Vintage Leather Jacket",
+      "category": "jacket",
+      "size": "M",
+      "style_tags": ["vintage", "edgy", "luxury"],
+      "vibe": "rebellious",
+      "condition": 0.9,
+      "rarity": 0.9,
+      "patience": 0.8
+    },
+    {
+      "id": "c6",
+      "owner_id": "u1",
+      "name": "Lined Cream Eco Bag",
+      "category": "bag",
+      "size": "one-size",
+      "style_tags": ["eco", "minimal"],
+      "vibe": "understated",
+      "condition": 0.9,
+      "rarity": 0.5,
+      "patience": 0.5
+    },
+    {
+      "id": "c7",
+      "owner_id": "u1",
+      "name": "North Face Puffer",
+      "category": "jacket",
+      "size": "L",
+      "style_tags": ["sporty", "warm", "practical"],
+      "vibe": "casual",
+      "condition": 0.85,
+      "rarity": 0.4,
+      "patience": 0.6
+    },
+    {
+      "id": "c8",
+      "owner_id": "u1",
+      "name": "Zara Pink Cardigan",
+      "category": "cardigan",
+      "size": "S",
+      "style_tags": ["trendy", "cute", "soft"],
+      "vibe": "playful",
+      "condition": 0.9,
+      "rarity": 0.5,
+      "patience": 0.5
+    }
+  ]
+  
