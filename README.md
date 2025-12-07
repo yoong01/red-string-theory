@@ -2,14 +2,17 @@
 
 An AI-powered platform where autonomous agents negotiate clothing trades on behalf of garments, using compatibility scoring and natural language dialogues.
 
+**Powered by [SpoonOS Framework](https://github.com/XSpoonAi/spoon-core)** - AI agent orchestration and LLM integration
+
 ## Architecture
 
 ### Backend Components
 
+- **SpoonOS Framework**: Core AI agent system with ToolCallAgent and custom tools
 - **Supabase Database**: Stores garments, users, swap intents, and swap history
 - **GarmentAgent**: Autonomous agents that evaluate compatibility and propose swaps
 - **Agent Orchestrator**: Continuously runs matching logic every 60 seconds
-- **LLM Dialogue Generation**: Creates natural conversations between garments
+- **LLM Dialogue Generation**: Creates natural conversations using SpoonOS ChatBot
 - **ElevenLabs Voice Synthesis**: Converts dialogues to audio (optional)
 - **Neo N3 Blockchain**: Records swap intents on-chain (optional)
 
@@ -25,14 +28,29 @@ An AI-powered platform where autonomous agents negotiate clothing trades on beha
 
 The `.env` file contains your Supabase credentials. The database is already configured and ready to use.
 
+**Required:** Add an LLM API key for SpoonOS (choose at least one):
+```env
+OPENAI_API_KEY=sk-...
+# or
+ANTHROPIC_API_KEY=sk-ant-...
+# or
+GEMINI_API_KEY=AIza...
+```
+
 Optional environment variables:
 - `ELEVENLABS_API_KEY`: For voice synthesis (optional)
 - `NEO_PRIVATE_KEY`: For blockchain integration (optional)
 
 ### 2. Install Dependencies
 
+**Node.js dependencies:**
 ```bash
 npm install
+```
+
+**Python dependencies (SpoonOS):**
+```bash
+pip install -r requirements.txt
 ```
 
 ### 3. Database Setup
@@ -47,13 +65,20 @@ This creates:
 - 2 demo users (Alice and Bob)
 - 8 sample garments with different styles and personalities
 
-### 4. Start the Backend Server
+### 4. Start the Services
 
+**Terminal 1 - SpoonOS Service (Python):**
+```bash
+cd spoon_service
+python server.py
+```
+
+**Terminal 2 - Node.js API Server:**
 ```bash
 npm start
 ```
 
-The API server will start on `http://localhost:3001` and the agent orchestrator will begin autonomously matching garments.
+The SpoonOS service starts on port 5000, and the Node.js API server starts on port 3001. The agent orchestrator will begin autonomously matching garments.
 
 ### 5. Serve the Frontend
 
@@ -214,6 +239,38 @@ Matches prioritize style synergy, aesthetic alignment, and owner preferences rat
 ### Negotiation Dynamics
 
 Match standards gradually lower over time based on patience levels, modeling realistic negotiation behavior where items become more flexible if they remain unmatched.
+
+## SpoonOS Integration
+
+Red String Theory leverages the **SpoonOS Framework** for AI-powered agent decision-making:
+
+### Core Components
+
+1. **ToolCallAgent** - Base agent class with tool execution capabilities
+2. **Custom Tools**:
+   - `CompatibilityAnalysisTool` - Multi-factor garment compatibility scoring
+   - `SwapFairnessEvaluationTool` - Fairness assessment for proposed swaps
+3. **ChatBot** - Unified LLM access (OpenAI, Anthropic, Gemini, DeepSeek, OpenRouter)
+
+### Agent Flow
+
+```
+Garment A detects high compatibility with Garment B
+  └─→ SpoonOS GarmentDialogueAgent activates
+      ├─→ Uses CompatibilityAnalysisTool
+      ├─→ Uses SwapFairnessEvaluationTool
+      ├─→ Generates proposal dialogue
+      └─→ Generates acceptance dialogue
+```
+
+### Key Features
+
+- **Autonomous decision-making** using SpoonOS ToolCallAgent
+- **Tool-assisted analysis** for compatibility scoring
+- **Multi-LLM support** via SpoonOS ChatBot
+- **Fallback handling** when service unavailable
+
+For detailed technical documentation, see [SPOONOS_INTEGRATION.md](SPOONOS_INTEGRATION.md).
 
 ## Demo User IDs
 

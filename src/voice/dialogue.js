@@ -1,4 +1,7 @@
 const logger = require('../utils/logger');
+const axios = require('axios');
+
+const SPOON_SERVICE_URL = process.env.SPOON_SERVICE_URL || 'http://localhost:5000';
 
 function generateProposalPrompt(garmentA, garmentB, compatibility) {
   const styleOverlap = garmentA.style_tags.filter(tag =>
@@ -58,39 +61,55 @@ In 2-3 sentences, respond to ${garmentA.name}'s proposal with enthusiasm and acc
 
 async function generateDialogue(garmentA, garmentB, compatibility, llmClient) {
   try {
-    const proposalPrompt = generateProposalPrompt(garmentA, garmentB, compatibility);
-    const acceptancePrompt = generateAcceptancePrompt(garmentB, garmentA, compatibility);
+    logger.info(`Calling SpoonOS service at ${SPOON_SERVICE_URL} for dialogue generation`);
 
-    const proposalResponse = await llmClient.chat({
-      messages: [{ role: 'user', content: proposalPrompt }],
-      temperature: 0.8,
-      max_tokens: 150
+    const response = await axios.post(`${SPOON_SERVICE_URL}/dialogue/generate`, {
+      garment_a: {
+        name: garmentA.name,
+        category: garmentA.category,
+        style_tags: garmentA.style_tags || [],
+        personality: garmentA.personality || [],
+        vibe: garmentA.vibe || 'neutral',
+        condition: garmentA.condition,
+        rarity: garmentA.rarity || 0.5,
+        size: garmentA.size
+      },
+      garment_b: {
+        name: garmentB.name,
+        category: garmentB.category,
+        style_tags: garmentB.style_tags || [],
+        personality: garmentB.personality || [],
+        vibe: garmentB.vibe || 'neutral',
+        condition: garmentB.condition,
+        rarity: garmentB.rarity || 0.5,
+        size: garmentB.size
+      },
+      compatibility_score: compatibility.total
+    }, {
+      timeout: 30000
     });
 
-    const acceptanceResponse = await llmClient.chat({
-      messages: [{ role: 'user', content: acceptancePrompt }],
-      temperature: 0.8,
-      max_tokens: 150
-    });
+    const spoonData = response.data;
 
     const dialogue = {
       garmentA: {
         name: garmentA.name,
-        text: proposalResponse.content || proposalResponse
+        text: spoonData.garmentA.text
       },
       garmentB: {
         name: garmentB.name,
-        text: acceptanceResponse.content || acceptanceResponse
+        text: spoonData.garmentB.text
       },
       compatibility: Math.round(compatibility.total * 100),
-      fairness: Math.round(compatibility.fairness * 100)
+      fairness: Math.round(compatibility.fairness * 100),
+      powered_by: 'SpoonOS Framework'
     };
 
-    logger.info(`Generated dialogue between ${garmentA.name} and ${garmentB.name}`);
+    logger.info(`Successfully generated dialogue using SpoonOS between ${garmentA.name} and ${garmentB.name}`);
     return dialogue;
 
   } catch (error) {
-    logger.error(`Error generating dialogue: ${error.message}`);
+    logger.warn(`SpoonOS service unavailable (${error.message}), using fallback dialogue`);
 
     return {
       garmentA: {
@@ -99,10 +118,11 @@ async function generateDialogue(garmentA, garmentB, compatibility, llmClient) {
       },
       garmentB: {
         name: garmentB.name,
-        text: `I appreciate the vintage credibility you'd bring to my next owner. The streetwear synergy is realI can see us both getting more wear in a rotation that values that aesthetic. I'm accepting this swap with ${Math.round(compatibility.total * 100)}% compatibility confidence.`
+        text: `I appreciate the vintage credibility you'd bring to my next owner. The streetwear synergy is real—I can see us both getting more wear in a rotation that values that aesthetic. I'm accepting this swap with ${Math.round(compatibility.total * 100)}% compatibility confidence.`
       },
       compatibility: Math.round(compatibility.total * 100),
-      fairness: Math.round(compatibility.fairness * 100)
+      fairness: Math.round(compatibility.fairness * 100),
+      powered_by: 'Fallback (SpoonOS unavailable)'
     };
   }
 }
