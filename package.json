@@ -4,8 +4,10 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
+    "@supabase/supabase-js": "^2.39.0",
     "@cityofzion/neon-js": "^5.8.0",
     "@elevenlabs/elevenlabs-js": "^2.26.0",
+    "cors": "^2.8.5",
     "abort-controller": "^3.0.0",
     "asynckit": "^0.4.0",
     "axios": "^1.13.2",
@@ -89,7 +91,9 @@
     "which": "^2.0.2"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/api/server.js",
+    "seed": "node scripts/seed_data.js"
   },
   "keywords": [],
   "author": "",
